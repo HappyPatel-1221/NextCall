@@ -6,6 +6,8 @@ import { Layout } from "./components/Layout";
 import { Login } from "./pages/Login";
 import { Signup } from "./pages/Signup";
 import { Dashboard } from "./pages/Dashboard";
+import { Meeting } from "./pages/Meeting";
+import { StreamVideoProvider } from "./providers/StreamClientProvider";
 import { Toaster } from "react-hot-toast";
 
 function App() {
@@ -21,11 +23,14 @@ function App() {
               path="/"
               element={
                 <ProtectedRoute>
-                  <Layout />
+                  <StreamVideoProvider>
+                    <Layout />
+                  </StreamVideoProvider>
                 </ProtectedRoute>
               }
             >
               <Route index element={<Dashboard />} />
+              <Route path="/meeting/:id" element={<Meeting />} />
               {/* Future routes will go here, like upcoming, previous, recordings, personal-room */}
             </Route>
             

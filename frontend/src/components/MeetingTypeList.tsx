@@ -3,6 +3,8 @@ import { Plus, Users, Calendar as CalendarIcon, Video } from "lucide-react";
 import { MeetingModal } from "./MeetingModal";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import { useStreamVideoClient } from "@stream-io/video-react-sdk";
+import { useAuth } from "../context/AuthContext";
 
 interface ActionCardProps {
   title: string;
@@ -38,14 +40,44 @@ export const MeetingTypeList: React.FC = () => {
   });
   const navigate = useNavigate();
 
+  const client = useStreamVideoClient();
+  const { user } = useAuth();
+
   const createMeeting = async () => {
-    // Basic validation before step 5 implementation
-    if (!values.dateTime && meetingState === "isScheduleMeeting") {
-      toast.error("Please select a date and time");
-      return;
+    if (!client || !user) return;
+    try {
+      if (!values.dateTime && meetingState === "isScheduleMeeting") {
+        toast.error("Please select a date and time");
+        return;
+      }
+      
+      const id = crypto.randomUUID();
+      const call = client.call("default", id);
+      if (!call) throw new Error("Failed to create call");
+
+      const startsAt = values.dateTime.toISOString() || new Date(Date.now()).toISOString();
+      const description = values.description || "Instant Meeting";
+
+      await call.getOrCreate({
+        data: {
+          starts_at: startsAt,
+          custom: {
+            description,
+          },
+        },
+      });
+
+      setMeetingState(undefined);
+
+      if (meetingState === "isInstantMeeting") {
+        navigate(`/meeting/${call.id}`);
+      } else {
+        toast.success("Meeting Created");
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error("Failed to create meeting");
     }
-    toast.success("Meeting feature will be integrated in Step 5");
-    setMeetingState(undefined);
   };
 
   const joinMeeting = () => {
@@ -53,7 +85,8 @@ export const MeetingTypeList: React.FC = () => {
       toast.error("Please provide a valid meeting link");
       return;
     }
-    toast.success("Joining meeting...");
+    const meetingId = values.link.split("/").pop(); // basic extraction
+    navigate(`/meeting/${meetingId}`);
     setMeetingState(undefined);
   };
 
