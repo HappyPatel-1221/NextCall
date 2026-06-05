@@ -1,13 +1,13 @@
 import express from "express";
 import { StreamClient } from "@stream-io/node-sdk";
-import { authMiddleware, AuthRequest } from "../middleware/auth";
+import { authenticateToken, AuthRequest } from "../middleware/auth";
 
 const router = express.Router();
 
 const apiKey = process.env.STREAM_API_KEY;
 const apiSecret = process.env.STREAM_API_SECRET;
 
-router.get("/token", authMiddleware, async (req: AuthRequest, res: any) => {
+router.get("/token", authenticateToken, async (req: AuthRequest, res: any) => {
   try {
     if (!apiKey || !apiSecret) {
       return res.status(500).json({ error: "Stream API keys are missing" });

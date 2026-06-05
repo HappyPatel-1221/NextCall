@@ -5,6 +5,8 @@ import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { useStreamVideoClient } from "@stream-io/video-react-sdk";
 import { useAuth } from "../context/AuthContext";
+import { apiFetch } from "../utils/api";
+
 
 interface ActionCardProps {
   title: string;
@@ -55,7 +57,7 @@ export const MeetingTypeList: React.FC = () => {
       const call = client.call("default", id);
       if (!call) throw new Error("Failed to create call");
 
-      const startsAt = values.dateTime.toISOString() || new Date(Date.now()).toISOString();
+      const startsAt = values.dateTime ? values.dateTime.toISOString() : new Date(Date.now()).toISOString();
       const description = values.description || "Instant Meeting";
 
       await call.getOrCreate({
@@ -65,6 +67,17 @@ export const MeetingTypeList: React.FC = () => {
             description,
           },
         },
+      });
+
+      // Save the meeting to our custom Postgres database
+      await apiFetch("/meetings", {
+        method: "POST",
+        body: JSON.stringify({
+          title: description,
+          description: values.description,
+          time: startsAt,
+          code: call.id,
+        }),
       });
 
       setMeetingState(undefined);

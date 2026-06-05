@@ -7,8 +7,13 @@ import { Login } from "./pages/Login";
 import { Signup } from "./pages/Signup";
 import { Dashboard } from "./pages/Dashboard";
 import { Meeting } from "./pages/Meeting";
+import { Upcoming } from "./pages/Upcoming";
+import { Previous } from "./pages/Previous";
+import { Recordings } from "./pages/Recordings";
+import { PersonalRoom } from "./pages/PersonalRoom";
 import { StreamVideoProvider } from "./providers/StreamClientProvider";
 import { Toaster } from "react-hot-toast";
+
 
 function App() {
   return (
@@ -31,7 +36,10 @@ function App() {
             >
               <Route index element={<Dashboard />} />
               <Route path="/meeting/:id" element={<Meeting />} />
-              {/* Future routes will go here, like upcoming, previous, recordings, personal-room */}
+              <Route path="/upcoming" element={<Upcoming />} />
+              <Route path="/previous" element={<Previous />} />
+              <Route path="/recordings" element={<Recordings />} />
+              <Route path="/personal-room" element={<PersonalRoom />} />
             </Route>
             
             <Route path="*" element={<Navigate to="/" replace />} />

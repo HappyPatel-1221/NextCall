@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 
 import authRoutes from "./routes/auth";
 import streamRoutes from "./routes/stream";
+import meetingsRoutes from "./routes/meetings";
 
 dotenv.config();
 
@@ -20,6 +21,7 @@ app.use(express.json());
 // Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/stream", streamRoutes);
+app.use("/api/meetings", meetingsRoutes);
 
 app.get("/api/health", (req, res) => {
   res.json({ status: "ok", message: "NextCall Server is running smoothly" });
