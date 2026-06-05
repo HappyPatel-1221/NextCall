@@ -1,0 +1,60 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --color-dark-1: #090C16;
+  --color-dark-2: #1C1F2E;
+  --color-dark-3: #252A41;
+  --color-dark-4: #1E273A;
+
+  --color-light-1: #F4F6F9;
+  --color-light-2: #FFFFFF;
+  --color-light-3: #E9ECEF;
+  --color-light-4: #DEE2E6;
+
+  --color-blue-primary: #0E78F9;
+  --color-orange-primary: #FF742E;
+  --color-purple-primary: #830EF9;
+  --color-yellow-primary: #F9A90E;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Custom global glassmorphism effects */
+.glassmorphism {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.glassmorphism-dark {
+  background: rgba(28, 31, 46, 0.45);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+/* Scrollbar customisation */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(14, 120, 249, 0.2);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(14, 120, 249, 0.4);
+}
