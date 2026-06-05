@@ -9,6 +9,8 @@ export const Recordings: React.FC = () => {
   const { user } = useAuth();
   const [recordings, setRecordings] = useState<CallRecording[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [selectedVideoUrl, setSelectedVideoUrl] = useState<string | null>(null);
+  const [selectedVideoTitle, setSelectedVideoTitle] = useState<string>("");
 
   useEffect(() => {
     const fetchRecordings = async () => {
@@ -108,15 +110,16 @@ export const Recordings: React.FC = () => {
 
               <div className="flex items-center justify-between gap-4 mt-6 pt-4 border-t border-gray-100 dark:border-white/5">
                 <div className="flex items-center gap-2">
-                  <a
-                    href={recording.url}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="flex items-center gap-1.5 rounded-lg bg-blue-primary px-4 py-2 text-sm font-semibold text-white shadow hover:bg-blue-600 transition"
+                  <button
+                    onClick={() => {
+                      setSelectedVideoUrl(recording.url);
+                      setSelectedVideoTitle(recording.filename || "Meeting Recording");
+                    }}
+                    className="flex items-center gap-1.5 rounded-lg bg-blue-primary px-4 py-2 text-sm font-semibold text-white shadow hover:bg-blue-600 transition cursor-pointer"
                   >
                     <Play size={14} />
                     Play
-                  </a>
+                  </button>
                   <button
                     onClick={() => copyShareLink(recording.url)}
                     className="flex items-center gap-1.5 rounded-lg bg-gray-100 dark:bg-dark-2 px-3 py-2 text-sm font-semibold text-gray-700 dark:text-white hover:bg-gray-200 dark:hover:bg-dark-3 transition"
@@ -134,6 +137,31 @@ export const Recordings: React.FC = () => {
           <p className="text-lg font-semibold text-gray-500 dark:text-gray-400">
             No recordings found. Make sure recordings are enabled in your Stream Dashboard.
           </p>
+        </div>
+      )}
+      {selectedVideoUrl && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm px-4">
+          <div className="relative w-full max-w-[800px] rounded-xl bg-white dark:bg-dark-1 border border-gray-200 dark:border-white/10 p-6 shadow-2xl transition-all">
+            <div className="flex items-center justify-between pb-4 border-b border-gray-100 dark:border-white/5 mb-4">
+              <h2 className="text-xl font-bold text-gray-900 dark:text-white line-clamp-1">
+                {selectedVideoTitle}
+              </h2>
+              <button
+                onClick={() => setSelectedVideoUrl(null)}
+                className="text-gray-500 hover:text-gray-800 dark:hover:text-white text-sm font-semibold cursor-pointer"
+              >
+                Close
+              </button>
+            </div>
+            <div className="relative aspect-video w-full overflow-hidden rounded-lg bg-black">
+              <video
+                src={selectedVideoUrl}
+                controls
+                autoPlay
+                className="h-full w-full object-contain"
+              />
+            </div>
+          </div>
         </div>
       )}
     </section>
