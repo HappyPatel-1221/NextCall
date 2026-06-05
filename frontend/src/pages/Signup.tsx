@@ -118,7 +118,7 @@ export const Signup: React.FC = () => {
             <span>
               Already have an account?{" "}
               <Link to="/login" className="text-blue-primary hover:underline font-semibold">
-                Sign in
+                Login
               </Link>
             </span>
           </div>
