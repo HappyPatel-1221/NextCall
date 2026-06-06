@@ -22,11 +22,11 @@ router.get("/token", authenticateToken, async (req: AuthRequest, res: any) => {
     const streamClient = new StreamClient(apiKey, apiSecret);
 
     // Token validity (1 hour)
-    const exp = Math.round(new Date().getTime() / 1000) + 60 * 60;
+    const validityInSeconds = 60 * 60;
     const issued = Math.floor(Date.now() / 1000) - 60;
 
     // Create token
-    const token = streamClient.generateUserToken({ user_id: userId, validity_in_seconds: exp, iat: issued });
+    const token = streamClient.generateUserToken({ user_id: userId, validity_in_seconds: validityInSeconds, iat: issued });
 
     return res.json({ token });
   } catch (error) {
