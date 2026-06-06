@@ -1,8 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import {
-  StreamCall,
   StreamTheme,
   useCallStateHooks,
   CallControls,
@@ -11,29 +10,44 @@ import {
   CallParticipantsList,
   useCall,
 } from "@stream-io/video-react-sdk";
-import { useGetCallById } from "../hooks/useGetCallById";
+import { useMeeting } from "../context/MeetingContext";
 
 export const Meeting: React.FC = () => {
   const { id } = useParams();
   const { user } = useAuth();
-  const [isSetupComplete, setIsSetupComplete] = useState(false);
-  const { call, isCallLoading } = useGetCallById(id || "");
+  const { activeCall, isSetupComplete, setIsSetupComplete, joinMeeting } = useMeeting();
+  const [loading, setLoading] = useState(true);
 
-  if (!user || isCallLoading) return <div className="flex-center h-screen w-full text-white">Loading...</div>;
+  useEffect(() => {
+    if (!id || !user) return;
+    
+    const initCall = async () => {
+      try {
+        setLoading(true);
+        await joinMeeting(id);
+      } catch (error) {
+        console.error("Failed to initialize call:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  if (!call) return <p className="text-center text-3xl font-bold text-white">Call Not Found</p>;
+    initCall();
+  }, [id, user]);
+
+  if (!user || loading) return <div className="flex items-center justify-center h-[60vh] w-full text-white">Loading...</div>;
+
+  if (!activeCall) return <p className="text-center text-3xl font-bold text-white mt-12">Call Not Found</p>;
 
   return (
-    <main className="h-screen w-full bg-dark-2">
-      <StreamCall call={call}>
-        <StreamTheme>
-          {!isSetupComplete ? (
-            <MeetingSetup setIsSetupComplete={setIsSetupComplete} />
-          ) : (
-            <MeetingRoom />
-          )}
-        </StreamTheme>
-      </StreamCall>
+    <main className="min-h-[80vh] w-full rounded-2xl overflow-hidden bg-dark-2">
+      <StreamTheme>
+        {!isSetupComplete ? (
+          <MeetingSetup setIsSetupComplete={setIsSetupComplete} />
+        ) : (
+          <MeetingRoom />
+        )}
+      </StreamTheme>
     </main>
   );
 };
@@ -86,7 +100,7 @@ const MeetingSetup = ({ setIsSetupComplete }: { setIsSetupComplete: (value: bool
 };
 
 const MeetingRoom = () => {
-  const navigate = useNavigate();
+  const { endCall } = useMeeting();
   const [layout, setLayout] = useState<"grid" | "speaker-left" | "speaker-right">("speaker-left");
   const [showParticipants, setShowParticipants] = useState(false);
 
@@ -113,7 +127,7 @@ const MeetingRoom = () => {
       </div>
 
       <div className="fixed bottom-0 flex w-full items-center justify-center gap-5 flex-wrap p-4 bg-dark-1">
-        <CallControls onLeave={() => navigate("/")} />
+        <CallControls onLeave={endCall} />
         
         <div className="flex items-center gap-3">
           <select

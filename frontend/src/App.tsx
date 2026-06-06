@@ -12,6 +12,7 @@ import { Previous } from "./pages/Previous";
 import { Recordings } from "./pages/Recordings";
 import { PersonalRoom } from "./pages/PersonalRoom";
 import { StreamVideoProvider } from "./providers/StreamClientProvider";
+import { MeetingProvider } from "./context/MeetingContext";
 import { Toaster } from "react-hot-toast";
 
 
@@ -29,7 +30,9 @@ function App() {
               element={
                 <ProtectedRoute>
                   <StreamVideoProvider>
-                    <Layout />
+                    <MeetingProvider>
+                      <Layout />
+                    </MeetingProvider>
                   </StreamVideoProvider>
                 </ProtectedRoute>
               }
