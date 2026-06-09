@@ -1,4 +1,13 @@
-const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
+const getApiBaseUrl = () => {
+  const envUrl = import.meta.env.VITE_API_URL;
+  if (envUrl && !envUrl.includes("localhost")) {
+    return envUrl;
+  }
+  const isLocal = window.location.hostname.includes("localhost") || window.location.hostname.includes("127.0.0.1");
+  return isLocal ? "http://localhost:5000/api" : "https://nextcall-backend.vercel.app/api";
+};
+
+const API_BASE_URL = getApiBaseUrl();
 
 export async function apiFetch(endpoint: string, options: RequestInit = {}) {
   const token = localStorage.getItem("nextcall_token");
