@@ -8,7 +8,7 @@ export const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ childr
   if (loading) {
     return (
       <div className="min-h-screen bg-dark-1 text-white flex flex-col items-center justify-center">
-        {/* Pulsing NextCall Camera Logo Spinner */}
+        {/* Pulsing BondCall Camera Logo Spinner */}
         <div className="relative flex items-center justify-center mb-4">
           <div className="animate-ping absolute inline-flex h-12 w-12 rounded-full bg-blue-primary opacity-30"></div>
           <div className="relative rounded-full bg-blue-primary p-4 shadow-lg">
@@ -27,7 +27,7 @@ export const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ childr
             </svg>
           </div>
         </div>
-        <p className="text-gray-400 font-medium tracking-wide animate-pulse">Loading NextCall...</p>
+        <p className="text-gray-400 font-medium tracking-wide animate-pulse">Loading BondCall...</p>
       </div>
     );
   }

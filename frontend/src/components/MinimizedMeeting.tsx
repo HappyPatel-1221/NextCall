@@ -56,7 +56,7 @@ const MinimizedMeetingContent: React.FC<{ activeCall: Call }> = ({ activeCall })
         <div className="flex flex-col">
           <p className="text-[10px] font-bold text-blue-primary dark:text-blue-500 uppercase tracking-wider">Active Call</p>
           <h4 className="text-sm font-bold text-gray-800 dark:text-white truncate max-w-[160px]">
-            {activeCall.state.custom?.description || "NextCall Meeting"}
+            {activeCall.state.custom?.description || "BondCall Meeting"}
           </h4>
         </div>
         

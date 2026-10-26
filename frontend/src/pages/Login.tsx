@@ -55,10 +55,10 @@ export const Login: React.FC = () => {
                 />
               </svg>
             </div>
-            <span className="text-2xl font-extrabold text-white tracking-wide">NextCall</span>
+            <span className="text-2xl font-extrabold text-white tracking-wide">BondCall</span>
           </div>
 
-          <p className="text-gray-400 text-sm mb-6">to continue to NextCall</p>
+          <p className="text-gray-400 text-sm mb-6">to continue to BondCall</p>
 
 
 

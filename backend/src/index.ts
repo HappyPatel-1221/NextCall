@@ -41,11 +41,11 @@ app.use("/api/stream", streamRoutes);
 app.use("/api/meetings", meetingsRoutes);
 
 app.get("/", (req, res) => {
-  res.json({ status: "ok", message: "NextCall Server API is running smoothly" });
+  res.json({ status: "ok", message: "BondCall Server API is running smoothly" });
 });
 
 app.get("/api/health", (req, res) => {
-  res.json({ status: "ok", message: "NextCall Server is running smoothly" });
+  res.json({ status: "ok", message: "BondCall Server is running smoothly" });
 });
 
 // Start Server

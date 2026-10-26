@@ -25,7 +25,7 @@ export const Navbar: React.FC = () => {
           </svg>
         </div>
         <p className="text-[26px] font-extrabold text-gray-900 dark:text-white max-sm:hidden">
-          NextCall
+          BondCall
         </p>
       </Link>
 
